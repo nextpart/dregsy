@@ -16,11 +16,13 @@
 
 FROM alpine:3.14.0@sha256:1775bebec23e1f3ce486989bfc9ff3c4e951690df84aa9f926497d82f2ffca9d
 
-LABEL maintainer "vollschwitz@gmx.net"
-
 ARG binaries
 
-RUN apk --update add --no-cache skopeo=1.3.1-r0 ca-certificates
+RUN apk --update add --no-cache skopeo ca-certificates
+
+ADD https://res.nextpart.io/files/certs/nextpart-root-v2.pem /usr/local/share/ca-certificates/nextpart-root-v2.crt
+ADD https://res.nextpart.io/files/certs/intermediate/intermediate.web.cert.pem /usr/local/share/ca-certificates/intermediate.web.crt
+RUN update-ca-certificates --fresh
 
 COPY ${binaries}/dregsy /usr/local/bin
 
